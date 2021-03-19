@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GameWord from "../data/GameWord";
 import EndGame from "./EndGame";
+import GameHeader from "./GameHeader";
 import MainGame from "./MainGame";
 import Timer from "./Timer";
 
@@ -46,24 +47,14 @@ export default function GamePage({ user }) {
     setGameWord(newWord.toUpperCase());
   };
 
-  const mainGame = <MainGame word={gameWord} changeWord={changeWord} />;
   const btn = <button onClick={() => setGame(!game)}>END Game</button>;
-  const endGame = (
-    <EndGame
-      score={makeTime(score)}
-      setGame={() => {
-        setScoreArray([...scoreArray, score]);
-        setScore(0);
-        setGame(true);
-      }}
-    />
-  );
+
   let isCovered = false;
   const pastScores = scoreArray.map((game, i) => {
-    let color;
+    let color = "red";
     let tag;
     if (game === bestScore && !isCovered) {
-      color = "red";
+      color = "blue";
       isCovered = true;
       tag = "High Score";
     }
@@ -77,28 +68,38 @@ export default function GamePage({ user }) {
   if (game) {
     return (
       <div>
-        <Timer
-          gameWord={gameWord}
-          time={Math.max(Math.ceil(gameWord.length / gameLevel), 2)}
-          updateScore={(e) => {
-            const newScore = score + e;
-            if (newScore > bestScore) {
-              setBestScore(newScore);
-            }
-            setScore(newScore);
-          }}
-          setGame={() => setGame(!game)}
-        />
-        {mainGame} <br />
-        {makeTime(score)} <br />
-        {btn}
+        <GameHeader user={user} score={makeTime(score)} showScoreCard={true} />
+        <div className="game">
+          <Timer
+            gameWord={gameWord}
+            time={Math.max(Math.ceil(gameWord.length / gameLevel), 2)}
+            updateScore={(e) => {
+              const newScore = score + e;
+              if (newScore > bestScore) {
+                setBestScore(newScore);
+              }
+              setScore(newScore);
+            }}
+            setGame={() => setGame(!game)}
+          />
+          <MainGame word={gameWord} changeWord={changeWord} />
+        </div>
         {pastScores}
       </div>
     );
   } else {
     return (
       <div>
-        {endGame} <br />
+        <GameHeader user={user} score={makeTime(score)} showScoreCard={false} />
+        <EndGame
+          score={makeTime(score)}
+          setGame={() => {
+            setScoreArray([...scoreArray, score]);
+            setScore(0);
+            setGame(true);
+          }}
+          scoreArray={scoreArray}
+        />
       </div>
     );
   }

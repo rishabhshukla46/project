@@ -11,9 +11,9 @@ const makeTime = (time) => {
 
 export default function Countdown({ count }) {
   return (
-    <div className="countdown">
+    <div className="timer">
       <div className="base-timer">
-        {/* <svg
+        <svg
           className="base-timer__svg"
           viewBox="0 0 100 100"
           xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@ export default function Countdown({ count }) {
               r="45"
             />
           </g>
-        </svg> */}
+        </svg>
         <span className="base-timer__label">{makeTime(count)}</span>
       </div>
     </div>

@@ -45,6 +45,9 @@ export default function MainGame({ word, changeWord, setGame }) {
           autoFocus={true}
         />
       </div>
+      <button className="quit-game" onClick={() => location.reload()}>
+        QUIT
+      </button>
     </div>
   );
 }
